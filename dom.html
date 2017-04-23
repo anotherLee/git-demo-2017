@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+  <ul>
+    <li class=error>1</li>
+    <li class=error>2</li>
+    <li class=error>3</li>
+    <li class=error>4</li>
+  </ul>
+  <div class=new>我是一个新人</div>
+  <div class=new>我是另一个新人</div>
+
+  <script src="dom.js"></script>
+
+  <script>
+    console.assert(typeof $ === 'function')
+    let items = $('li')
+    console.assert(items.on !== null)
+    items.on('click',function(){
+        console.log('click')
+    })
+    
+    console.assert(items.addClass('hi') === items)
+    items.addClass('hi')
+    //items.text('你好')
+    console.assert(items.text() instanceof Array) 
+    let item = items.get(0)
+    console.log(item)
+    console.assert(item.textContent === '1')
+    console.assert(item.className === 'error hi')
+    let $item = $(item)
+    console.assert($item instanceof Array)
+    console.log($item.siblings())
+
+    let $li = $('li:nth-child(2)')
+    $li.siblings().addClass('error')
+    
+    let s = $('div')
+    console.assert(typeof s.insert === 'function')
+    s.insert('我是第三个新人')  //在写新的API的时候被作用域坑了^-^居然把它放到了最后一个return的后面
+
+
+    console.assert($li.siblings().previousSelection === $li)
+    //console.assert($li.siblings().end() === $li)
+
+    console.assert(items.get(0).tagName === 'LI')
+    console.assert(items.get(0).addEventListener !== undefined)
+    console.assert(items[0]===items.get(0))
+    console.log('-----')
+    console.assert(items[0].siblings === undefined) 
+    console.assert(typeof $item.on === 'function')
+    console.assert(typeof item.on === 'undefined')
+    console.log('运行完了')
+  </script>
+  <style>
+    .hi{
+        border:red 1px solid;
+    }
+    .error{
+        color:green;
+    }
+    .new{
+      border:1px solid green;
+    }
+
+  </style>
+</body>
+</html>

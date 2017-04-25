@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>第二十课作业</title>
+</head>
+<body>
+    <button id=xxx>click me</button>
+    <button id=yyy>get/set a</button>
+    
+    <script src=bom.js></script>
+    <script>
+        xxx.onclick = function(){
+            $.bom.openAtCenter(900,700,'//www.baidu.com')
+        }
+        yyy.onclick = function(){
+            //console.log($.bom.search('a'))
+            //console.log($.bom.search('b'))
+            //$.bom.search('c','limingru')
+            $.bom.search('a','3')
+        }
+        
+    </script>
+</body>
+</html>

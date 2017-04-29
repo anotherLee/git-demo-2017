@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播</title>
+    <script src="jquery-3.2.1.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 150px 400px;
+        }
+        
+        .slides {
+            height: 400px;
+            background: blue;
+            position: relative;
+            overflow: hidden;
+            /*为啥不在view里写这个hidden因为接下来要改变view的位移*/
+        }
+        
+        .view {
+            height: 100%;
+            display: flex;
+            overflow: visible;
+            transition: transform 1s;
+            transform: translateX(0px);
+        }
+        
+        .slide {
+            height: 100%;
+            width: 100%;
+            border: 1px solid;
+            background:#DDD;
+            flex-shrink: 0;
+            font-size: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide:first-child{
+            background:url('http://news.xinhuanet.com/photo/2011-03/29/121241878_381n.jpg')
+        }
+        .slide:nth-child(2){
+            background:url('http://i.magcasa.com.s3-ap-southeast-1.amazonaws.com/content_images/2015/10/06/150646/1444070709_5987.jpg')
+        }
+        .slide:nth-child(3){
+            background:url('http://i.magcasa.com.s3-ap-southeast-1.amazonaws.com/content_images/2015/11/08/175812/1446918178_2721.jpg')
+        }
+        
+        
+        .controls {
+            
+            position: absolute;
+            bottom: 0;
+            /*之前在这里坑里一下，找不到，原来和位置有关*/
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            transform:translate(-50%,0);
+            left:50%;
+        }
+        
+        ol li {
+            float: left;
+            padding: 10px;
+            margin:10px;
+            
+            border-radius:50%;
+            width:30px;
+            height:30px;
+            background:#7D7D7C;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slides">
+        <div class="view">
+            <div class=slide>1</div>
+            <div class=slide>2</div>
+            <div class=slide>3</div>
+        </div>
+    </div>
+
+    <script>
+        window.slides = function (element) {
+            let $el = $(element)
+            let width = $el.width()
+            let count = $el.find('.slide').length
+            let currentIndex = 0
+            let timerId
+
+            let $ol = $('<ol class=controls></ol>')
+            for (let i = 0; i < count; i++) {
+                $ol.append(`<li>${i + 1}</li>`)
+            }
+            $el.append($ol)
+            $ol.on('click', 'li', function (e) {
+                let $li = $(e.currentTarget)
+                let index = $li.index()
+                goToSlide(index)
+
+            })
+            $el.children('.view').on('mouseenter', function () {
+                clearInterval(timerId)
+            })
+            $el.children('.view').on('mouseleave', function () {
+                autoPlay()
+            })
+
+            function goToSlide(index) {
+                if (index < 0) {
+                    index = count - 1
+                } else if (index >= count) {
+                    index = 0
+                }
+                let number = - index * width
+                $el.children('.view').css({
+                    transform: `translateX(${number}px)`
+                })
+                currentIndex = index
+            }
+
+            function autoPlay() {
+                timerId = setInterval(function () {
+                    goToSlide(currentIndex + 1)
+                }, 3000)
+            }
+            autoPlay()
+
+
+        }
+
+
+
+
+        slides(document.querySelector('.slides'))
+    </script>
+
+</body>
+
+</html>
